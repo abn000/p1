@@ -1,18 +1,7 @@
-#include <SFML/Graphics.hpp>
+#include "Game.hpp"
 
 int main() 
 {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Hello World");
-    sf::Event e;
-    while (window.isOpen()) {
-        while(window.pollEvent(e)) {
-            if (e.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-
-        window.clear(sf::Color::White);
-        window.display();
-    }
+    Game game;
     return 0;
 }
