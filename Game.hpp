@@ -1,10 +1,11 @@
 #include "Cell.hpp"
+#include <vector>
 
 class Game {
-    const static int m_board_size = 20;
-    const static int m_window_size = m_board_size * Cell::m_cell_size;
+    const int m_board_size;
+    const int m_window_size = m_board_size * Cell::m_cell_size;
     
-    Cell m_board[m_board_size][m_board_size];
+    std::vector<std::vector<Cell>> m_board;
     sf::RenderWindow m_window;
     sf::Font m_font;
 
@@ -16,5 +17,5 @@ class Game {
     void uncover(int, int);
 
 public:
-    Game();
+    Game(int);
 };

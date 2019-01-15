@@ -1,7 +1,10 @@
 #include "Game.hpp"
 
-int main() 
+int main(int argc, char** argv) 
 {
-    Game game;
+    if (argc != 2) {
+        return 1;
+    }
+    Game game(atoi(argv[1]));
     return 0;
 }

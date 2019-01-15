@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "main",
-            "args": [],
+            "args": ["${input:size}"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -23,6 +23,20 @@
                 }
             ],
             "preLaunchTask": "build"
+        }
+    ],
+    "inputs": [
+        {
+            "default": "20",
+            "description": "board size",
+            "id": "size",
+            "type": "promptString"
+        },
+        {
+            "default": "50",
+            "id": "mines",
+            "description": "mines",
+            "type": "promptString"
         }
     ]
 }

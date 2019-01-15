@@ -1,12 +1,15 @@
 #include "Game.hpp"
 #include <cstdlib>
 
-Game::Game() 
-: m_window(sf::VideoMode(m_window_size,m_window_size), "My Game"), m_current_size(sf::Vector2f(m_window_size, m_window_size)) {
+Game::Game(int board_size) 
+: m_board_size(board_size), m_window(sf::VideoMode(m_window_size,m_window_size), "My Game")  {
+    m_current_size = sf::Vector2f(m_window_size, m_window_size);
     srand(time(0));
     m_font.loadFromFile("font.ttf");
     for (int i = 0; i < m_board_size; i++) {
+        m_board.push_back(std::vector<Cell>());
         for (int j = 0; j < m_board_size; j++) {
+            m_board[i].push_back(Cell());
             if (rand() % 100 > 70) {
                 m_board[i][j].setMine(true);
             }
