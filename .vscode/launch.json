@@ -9,7 +9,10 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "main",
-            "args": ["${input:size}"],
+            "args": [
+                "${input:size}",
+                "${input:mines}"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
