@@ -1,19 +1,20 @@
-OBJS = main.o Game.o Cell.o 
+BIN = bin
+OBJS = $(BIN)/main.o $(BIN)/Game.o $(BIN)/Cell.o 
 CFLAGS = -g -Wall
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 CC = g++
 
-main : $(OBJS)
+$(BIN)/main : $(OBJS)
 	$(CC) -o $@ $^ $(LIBS)
 
-main.o : main.cpp Game.hpp
-	$(CC) $(CFLAGS) -c $<
+$(BIN)/main.o : main.cpp Game.hpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
-Game.o : Game.cpp Game.hpp Cell.hpp
-	$(CC) $(CFLAGS) -c $<
+$(BIN)/Game.o : Game.cpp Game.hpp Cell.hpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
-Cell.o : Cell.cpp Cell.hpp
-	$(CC) $(CFLAGS) -c $<
+$(BIN)/Cell.o : Cell.cpp Cell.hpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
-	rm main $(OBJS)
+	rm $(BIN)/main $(OBJS)
