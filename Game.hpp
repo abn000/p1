@@ -34,7 +34,7 @@ class Game {
 
     void reset();
 
-    void generate_mines();
+    void generate_mines(sf::Vector2i);
 
 public:
     Game(int, int);

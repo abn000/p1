@@ -8,13 +8,13 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
+            "cwd": "${workspaceFolder}",
             "program": "main",
             "args": [
                 "${input:size}",
                 "${input:mines}"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

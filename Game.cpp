@@ -6,7 +6,7 @@
 Game::Game(int board_size = 20, int mines = 50) 
 : m_board_size(board_size), m_total_mines(mines), m_window(sf::VideoMode(m_window_size,m_window_size), "My Game")  {
     m_current_size = sf::Vector2f(m_window_size, m_window_size);
-    m_font.loadFromFile("font.ttf");
+    m_font.loadFromFile("res/font.ttf");
 
     m_win_msg.setFont(m_font);
     m_win_msg.setCharacterSize(30);
@@ -21,11 +21,13 @@ Game::Game(int board_size = 20, int mines = 50)
     run();
 }
 
-void Game::generate_mines() {
+void Game::generate_mines(sf::Vector2i p) {
     std::vector<Cell*> pool;
     for (int i = 0; i < m_board_size; i++) {
         for (int j = 0; j < m_board_size; j++) {
-            pool.push_back(&m_board[i][j]);
+            if (!(i == p.y && j == p.x)) {
+                pool.push_back(&m_board[i][j]);
+            }
         }
     }
     std::shuffle(pool.begin(), pool.end(), std::default_random_engine(time(0)));
@@ -154,13 +156,13 @@ void Game::run() {
                 m_window.close();
                 break;
             case sf::Event::MouseButtonPressed:
-                if (!started) {
-                    generate_mines();
-                    started = true;
-                }
                 int x, y;
                 x = e.mouseButton.x / (Cell::m_cell_size * m_current_size.x / m_window_size);
                 y = e.mouseButton.y / (Cell::m_cell_size * m_current_size.y / m_window_size);
+                if (!started) {
+                    generate_mines(sf::Vector2i(x, y));
+                    started = true;
+                }
                 if (m_board[y][x].isCovered()) {
                     uncover(x, y);
                     if (m_board[y][x].isMine()) {
