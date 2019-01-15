@@ -159,14 +159,21 @@ void Game::run() {
                 int x, y;
                 x = e.mouseButton.x / (Cell::m_cell_size * m_current_size.x / m_window_size);
                 y = e.mouseButton.y / (Cell::m_cell_size * m_current_size.y / m_window_size);
-                if (!started) {
-                    generate_mines(sf::Vector2i(x, y));
-                    started = true;
+                if (e.mouseButton.button == sf::Mouse::Left) {
+                    if (!started) {
+                        generate_mines(sf::Vector2i(x, y));
+                        started = true;
+                    }
+                    if (m_board[y][x].isCovered() && !m_board[y][x].isFlagged()) {
+                        uncover(x, y);
+                        if (m_board[y][x].isMine()) {
+                            lose();
+                        }
+                    }
                 }
-                if (m_board[y][x].isCovered()) {
-                    uncover(x, y);
-                    if (m_board[y][x].isMine()) {
-                        lose();
+                else if (e.mouseButton.button == sf::Mouse::Right) {
+                    if (m_board[y][x].isCovered()) {
+                        m_board[y][x].setFlagged(!m_board[y][x].isFlagged());
                     }
                 }
                 break;

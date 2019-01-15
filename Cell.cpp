@@ -1,6 +1,7 @@
 #include "Cell.hpp"
 
-Cell::Cell() : m_covered(true), m_mine(false), m_neighbours(-1), m_shape(sf::Vector2f(m_cell_size - 4,m_cell_size - 4)), m_font(NULL) {
+Cell::Cell() 
+: m_covered(true), m_mine(false), m_flagged(false), m_neighbours(-1), m_shape(sf::Vector2f(m_cell_size - 4,m_cell_size - 4)), m_font(NULL) {
     m_shape.setFillColor(sf::Color::Blue);
     m_shape.setOutlineColor(sf::Color::Black);
     m_shape.setOutlineThickness(2.f);
@@ -17,6 +18,10 @@ bool Cell::isCovered() {
 
 bool Cell::isMine() {
     return m_mine;
+}
+
+bool Cell::isFlagged() {
+    return m_flagged;
 }
 
 int Cell::getNeighbours() {
@@ -37,6 +42,16 @@ void Cell::setCovered(bool covered) {
 
 void Cell::setMine(bool mine) {
     m_mine = mine;
+}
+
+void Cell::setFlagged(bool flag) {
+    m_flagged = flag;
+    if (flag) {
+        m_shape.setFillColor(sf::Color::Yellow);
+    }
+    else {
+        m_shape.setFillColor(sf::Color::Blue);
+    }
 }
 
 void Cell::setNeighbours(int neighbours) {

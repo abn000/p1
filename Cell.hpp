@@ -3,6 +3,7 @@
 class Cell {
     bool m_covered;
     bool m_mine;
+    bool m_flagged;
     int m_neighbours;
 
     sf::RectangleShape m_shape;
@@ -19,11 +20,13 @@ public:
     Cell();
     bool isCovered();
     bool isMine();
+    bool isFlagged();
     int getNeighbours();
 
     void setMine(bool);
     void setNeighbours(int);
     void setCovered(bool);
+    void setFlagged(bool);
     void setPosition(sf::Vector2i);
 
     void setFont(sf::Font*);
