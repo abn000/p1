@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <cstdlib>
 #include <algorithm>
 #include <random>
 #include <iostream>
@@ -18,24 +17,12 @@ Game::Game(int board_size = 20, int mines = 50)
     m_lose_msg.setCharacterSize(30);
     m_lose_msg.setString(L"You lose!");
     m_lose_msg.setPosition(m_current_size * 0.5f);
-
-    srand(time(0));
     reset();
     run();
 }
 
-void Game::reset() {
-    won = false;
-    lost = false;
+void Game::generate_mines() {
     std::vector<Cell*> pool;
-    m_board.clear();
-    for (int i = 0; i < m_board_size; i++) {
-        m_board.push_back(std::vector<Cell>());
-        for (int j = 0; j < m_board_size; j++) {
-            m_board[i].push_back(Cell());
-            m_board[i][j].setPosition(sf::Vector2i(j * Cell::m_cell_size, i * Cell::m_cell_size));
-        }
-    }
     for (int i = 0; i < m_board_size; i++) {
         for (int j = 0; j < m_board_size; j++) {
             pool.push_back(&m_board[i][j]);
@@ -143,6 +130,21 @@ void Game::reset() {
     }
 }
 
+void Game::reset() {
+    won = false;
+    lost = false;
+    started = false;
+    m_board.clear();
+    for (int i = 0; i < m_board_size; i++) {
+        m_board.push_back(std::vector<Cell>());
+        for (int j = 0; j < m_board_size; j++) {
+            m_board[i].push_back(Cell());
+            m_board[i][j].setPosition(sf::Vector2i(j * Cell::m_cell_size, i * Cell::m_cell_size));
+        }
+    }
+    to_uncover = m_board_size * m_board_size - m_total_mines;
+}
+
 void Game::run() {
     while (m_window.isOpen()) {
         sf::Event e;
@@ -152,6 +154,10 @@ void Game::run() {
                 m_window.close();
                 break;
             case sf::Event::MouseButtonPressed:
+                if (!started) {
+                    generate_mines();
+                    started = true;
+                }
                 int x, y;
                 x = e.mouseButton.x / (Cell::m_cell_size * m_current_size.x / m_window_size);
                 y = e.mouseButton.y / (Cell::m_cell_size * m_current_size.y / m_window_size);
@@ -200,6 +206,7 @@ void Game::draw() {
 void Game::uncover(int x, int y) {
     if (m_board[y][x].isCovered()) {
         m_board[y][x].setCovered(false);
+        to_uncover--;
         if (m_board[y][x].getNeighbours() == 0 && !m_board[y][x].isMine()) {
             if (x > 0 && y > 0) {
                 uncover(x - 1, y - 1);
