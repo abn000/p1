@@ -68,8 +68,8 @@ void Cell::setNeighFlags(int flags) {
 
 void Cell::setPosition(sf::Vector2i pos) {
     m_position = pos;
-    m_shape.setPosition((sf::Vector2f)pos + sf::Vector2f(2.f,2.f));
-    m_text.setPosition((sf::Vector2f)pos);
+    m_shape.setPosition((sf::Vector2f)pos + sf::Vector2f(2.f,2.f));    
+    m_text.setPosition((sf::Vector2f)pos + sf::Vector2f(m_cell_size - 10, m_cell_size - 20) * 0.5f);
 }
 
 void Cell::setFont(sf::Font* font) {

@@ -12,11 +12,22 @@ Game::Game(int board_size = 20, int mines = 50)
     m_win_msg.setCharacterSize(30);
     m_win_msg.setString(L"You win!");
     m_win_msg.setPosition(m_current_size * 0.5f);
+        //center text
+    sf::FloatRect textRect = m_win_msg.getLocalBounds();
+    m_win_msg.setOrigin(textRect.left + textRect.width/2.0f,
+                textRect.top  + textRect.height/2.0f);
+    m_win_msg.setPosition(m_current_size * 0.5f);
     
     m_lose_msg.setFont(m_font);
     m_lose_msg.setCharacterSize(30);
     m_lose_msg.setString(L"You lose!");
     m_lose_msg.setPosition(m_current_size * 0.5f);
+    
+    textRect = m_lose_msg.getLocalBounds();
+    m_lose_msg.setOrigin(textRect.left + textRect.width/2.0f,
+                textRect.top  + textRect.height/2.0f);
+    m_lose_msg.setPosition(m_current_size * 0.5f);
+    
     reset();
     run();
 }
