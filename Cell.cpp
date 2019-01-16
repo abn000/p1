@@ -28,6 +28,10 @@ int Cell::getNeighbours() {
     return m_neighbours;
 }
 
+int Cell::getNeighFlags() {
+    return m_neighbour_flags;
+}
+
 void Cell::setCovered(bool covered) {
     m_covered = covered;
     if (!covered) {
@@ -56,6 +60,10 @@ void Cell::setFlagged(bool flag) {
 
 void Cell::setNeighbours(int neighbours) {
     m_neighbours = neighbours;
+}
+
+void Cell::setNeighFlags(int flags) {
+    m_neighbour_flags = flags;
 }
 
 void Cell::setPosition(sf::Vector2i pos) {

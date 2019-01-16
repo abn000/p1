@@ -5,6 +5,7 @@ class Cell {
     bool m_mine;
     bool m_flagged;
     int m_neighbours;
+    int m_neighbour_flags;
 
     sf::RectangleShape m_shape;
     sf::Font* m_font;
@@ -22,9 +23,11 @@ public:
     bool isMine();
     bool isFlagged();
     int getNeighbours();
+    int getNeighFlags();
 
     void setMine(bool);
     void setNeighbours(int);
+    void setNeighFlags(int);
     void setCovered(bool);
     void setFlagged(bool);
     void setPosition(sf::Vector2i);

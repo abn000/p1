@@ -164,10 +164,34 @@ void Game::run() {
                         generate_mines(sf::Vector2i(x, y));
                         started = true;
                     }
+                    count_flags(x, y);
                     if (m_board[y][x].isCovered() && !m_board[y][x].isFlagged()) {
                         uncover(x, y);
-                        if (m_board[y][x].isMine()) {
-                            lose();
+                    }
+                    else if (!m_board[y][x].isCovered() && m_board[y][x].getNeighFlags() == m_board[y][x].getNeighbours()) {
+                        if (x > 0 && y > 0 && !m_board[ y - 1][x - 1].isFlagged()) {
+                            uncover(x - 1, y - 1);
+                        }
+                        if (x > 0 && !m_board[ y][x - 1].isFlagged()) {
+                            uncover(x - 1, y);
+                        }
+                        if (x > 0 && y < m_board_size - 1 && !m_board[ y + 1][x - 1].isFlagged()) {
+                            uncover(x - 1, y + 1);
+                        }
+                        if (y > 0 && !m_board[ y - 1][x].isFlagged()) {
+                            uncover(x, y - 1);
+                        }
+                        if (y < m_board_size - 1 && !m_board[ y + 1][x].isFlagged()) {
+                            uncover(x, y + 1);
+                        }
+                        if (x < m_board_size - 1 && y > 0 && !m_board[ y - 1][x + 1].isFlagged()) {
+                            uncover(x + 1, y - 1);
+                        }
+                        if (x < m_board_size - 1 && !m_board[ y][x + 1].isFlagged()) {
+                            uncover(x + 1, y);
+                        }
+                        if (x < m_board_size - 1 && y < m_board_size - 1 && !m_board[ y + 1][x + 1].isFlagged()) {
+                            uncover(x + 1, y + 1);
                         }
                     }
                 }
@@ -215,7 +239,6 @@ void Game::draw() {
 void Game::uncover(int x, int y) {
     if (m_board[y][x].isCovered()) {
         m_board[y][x].setCovered(false);
-        to_uncover--;
         if (m_board[y][x].getNeighbours() == 0 && !m_board[y][x].isMine()) {
             if (x > 0 && y > 0) {
                 uncover(x - 1, y - 1);
@@ -242,17 +265,23 @@ void Game::uncover(int x, int y) {
                 uncover(x + 1, y + 1);
             }
         }
+        if (m_board[y][x].isMine() && !won) {
+            lose();
+        }
+        else {
+            to_uncover--;
+        }
     }
 }
 
 void Game::lose() {
-    uncover_all();
     lost = true;
+    uncover_all();
 }
 
 void Game::win() {
-    uncover_all();
     won = true;
+    uncover_all();
 }
 
 void Game::uncover_all() {
@@ -263,4 +292,73 @@ void Game::uncover_all() {
             }
         }
     }
+}
+
+void Game::count_flags(int j, int i) {
+    int flags = 0;
+    if (j > 0 && i > 0) {
+        int x, y;
+        x = j - 1;
+        y = i - 1;
+        if (m_board[y][x].isFlagged()) {
+            flags++;
+        }
+    }
+    if (j > 0) {
+        int x, y;
+        x = j - 1;
+        y = i;
+        if (m_board[y][x].isFlagged()) {
+            flags++;
+        }
+    }
+    if (j > 0 && i < m_board_size - 1) {
+        int x, y;
+        x = j - 1;
+        y = i + 1;
+        if (m_board[y][x].isFlagged()) {
+            flags++;
+        }
+    }
+    if (i > 0) {
+        int x, y;
+        x = j;
+        y = i - 1;
+        if (m_board[y][x].isFlagged()) {
+            flags++;
+        }
+    }
+    if (i < m_board_size - 1) {
+        int x, y;
+        x = j;
+        y = i + 1;
+        if (m_board[y][x].isFlagged()) {
+            flags++;
+        }
+    }
+    if (j < m_board_size - 1 && i > 0) {
+        int x, y;
+        x = j + 1;
+        y = i - 1;
+        if (m_board[y][x].isFlagged()) {
+            flags++;
+        }
+    }
+    if (j < m_board_size - 1) {
+        int x, y;
+        x = j + 1;
+        y = i;
+        if (m_board[y][x].isFlagged()) {
+            flags++;
+        }
+    }
+    if (j < m_board_size - 1 && i < m_board_size - 1) {
+        int x, y;
+        x = j + 1;
+        y = i + 1;
+        if (m_board[y][x].isFlagged()) {
+            flags++;
+        }
+    }
+    m_board[i][j].setNeighFlags(flags);
 }

@@ -36,6 +36,8 @@ class Game {
 
     void generate_mines(sf::Vector2i);
 
+    void count_flags(int, int);
+
 public:
     Game(int, int);
 };
